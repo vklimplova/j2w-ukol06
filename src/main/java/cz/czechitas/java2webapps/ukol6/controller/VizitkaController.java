@@ -4,13 +4,11 @@ import cz.czechitas.java2webapps.ukol6.entity.Vizitka;
 import cz.czechitas.java2webapps.ukol6.repository.VizitkaRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Optional;
@@ -36,10 +34,11 @@ public class VizitkaController {
     }
 
     @GetMapping("/{id:[0-9]+}")
-    public ModelAndView detail(@PathVariable int id) {
+    /* použít Object, protože se to váže k ResponseEntity, nelze použít ModelandView*/
+    public Object detail(@PathVariable int id) {
         Optional<Vizitka> vizitka = vizitkaRepository.findById(id);
         if (vizitka.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
         return new ModelAndView("vizitka")
                 .addObject("vizitka", vizitka.get());
@@ -62,4 +61,5 @@ public class VizitkaController {
         vizitkaRepository.save(vizitka);
         return "redirect:/";
     }
+
 }

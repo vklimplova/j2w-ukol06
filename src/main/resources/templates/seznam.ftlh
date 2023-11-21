@@ -35,6 +35,8 @@
                 </svg>
             </div>
         </a>
+    [#else]
+        <p class="fst-italic">Seznam vizitek je prázdný.</p>
     [/#list]
     </div>
 [/@c.page]
